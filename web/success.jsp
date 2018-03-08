@@ -74,32 +74,34 @@ return date_long;
 
 
 <%
-         String id = "";
-         String cn = "";
-         String expiry_date = "";
-         String server_name = "";
-         String server_ip = "";
-         String server_owner = "";
-         String algorithm = "";
-         String bit_length = "";
-         String type = "";
+         String s_id = "";
+         String t_id = "";
+         String search_id = "";
+         String name = "";
+         String surname = "";
+         String fathers_name = "";
+         String birth_date = "";
          String phone = "";
+         String email = "";
+         String status = "";
          String description = "";
          boolean expired;
          boolean expiring;
+         String table_name = "students";
+         String id = "s_id";
          
          
-        if (request.getParameter("id") != null) {           id =                        request.getParameter("id"); }
-        if (request.getParameter("cn") != null) {           cn =                        request.getParameter("cn"); }
-        if (request.getParameter("expiry_date") != null) {  expiry_date =               request.getParameter("expiry_date"); }
-        if (request.getParameter("server_name") != null) {  server_name =               request.getParameter("server_name"); }
-        if (request.getParameter("server_ip") != null) {    server_ip =                 request.getParameter("server_ip"); }
-        if (request.getParameter("server_owner") != null) { server_owner =              request.getParameter("server_owner"); }
-        if (request.getParameter("algorithm") != null) {    algorithm =                 request.getParameter("algorithm"); }
-        if (request.getParameter("bit_length") != null) {   bit_length =                request.getParameter("bit_length"); }
-        if (request.getParameter("type") != null) {         type =                      request.getParameter("type"); }
-        if (request.getParameter("phone") != null) {        phone =                     request.getParameter("phone"); }
-        if (request.getParameter("description") != null) {  description =               request.getParameter("description"); }
+        if (request.getParameter("s_id") != null) {         s_id =              request.getParameter("s_id"); }
+        if (request.getParameter("t_id") != null) {         t_id =              request.getParameter("t_id"); }
+        if (request.getParameter("name") != null) {         name =              request.getParameter("name"); }
+        if (request.getParameter("surname") != null) {      surname =           request.getParameter("surname"); }
+        if (request.getParameter("fathers_name") != null) { fathers_name =      request.getParameter("fathers_name"); }
+        if (request.getParameter("birth_date") != null) {   birth_date =        request.getParameter("birth_date"); }
+        if (request.getParameter("phone") != null) {        phone =             request.getParameter("phone"); }
+        if (request.getParameter("email") != null) {        email =             request.getParameter("email"); }
+        if (request.getParameter("status") != null) {       status =            request.getParameter("status"); }
+        if (request.getParameter("description") != null) {  description =       request.getParameter("description"); }
+        if (request.getParameter("table_name") != null) {   table_name =        request.getParameter("table_name"); }
         
     
  try { 
@@ -121,18 +123,30 @@ return date_long;
     Class.forName(driver);
     Connection con =DriverManager.getConnection(url, username, password);
     
-    String select_query =  "SELECT  ID,  CN,  EXPIRY_DATE,  SERVER_NAME,  IP,  DESCRIPTION,  ALGORITHM,  BIT_LENGTH,  TYPE,  "
-            + "NOTIFY,  PHONE,  NOTIFIED_COUNT,  SERVER_OWNER "
-            + "FROM CERTS "
-            + "WHERE ID LIKE ? AND CN LIKE ? AND EXPIRY_DATE LIKE ? AND SERVER_NAME LIKE ? AND IP LIKE ? AND DESCRIPTION LIKE ? AND ALGORITHM LIKE ? AND BIT_LENGTH LIKE ? AND "
-            + "TYPE LIKE ? AND PHONE LIKE ? AND SERVER_OWNER LIKE ?";
+    if (table_name.equals("t") ){
+        table_name = "teachers";
+        id = "t_id";
+        search_id = t_id;
+        
+    }
+    else { 
+        table_name = "students";
+        id = "s_id"; 
+        search_id = s_id;
+    }
+    
+    String select_query =  "SELECT  " + id + " ,  name,  surname,  fathers_name, birth_date,  phone,  email,  status,  description "
+            + " FROM  " + table_name 
+            + " WHERE " + id + " LIKE ? AND name LIKE ? AND surname LIKE ? AND fathers_name LIKE ? AND birth_date LIKE ? AND phone LIKE ? AND email LIKE ? AND status LIKE ? AND "
+            + " description LIKE ? ";
+    
  
      expiring = request.getParameter("expiring" ) != null;
      expired  = request.getParameter("expired"  ) != null;
-     
+     /******
      if (expiring && expired)
     {
-    
+
         select_query = select_query +" AND (SUBDATE(STR_TO_DATE(EXPIRY_DATE,'%d/%m/%Y'),31) <= NOW() OR SUBDATE(STR_TO_DATE(EXPIRY_DATE,'%d/%m/%Y'),0) < NOW()) ORDER BY STR_TO_DATE(EXPIRY_DATE,'%d/%m/%Y') ";
     }
      else if (expiring)
@@ -142,21 +156,20 @@ return date_long;
      else if (expired)
      {
         select_query = select_query +" AND  SUBDATE(STR_TO_DATE(EXPIRY_DATE,'%d/%m/%Y'),0) < NOW()  ORDER BY STR_TO_DATE(EXPIRY_DATE,'%d/%m/%Y') ";
-  
-     }
 
+     }
+     *****/
         PreparedStatement stmt = con.prepareStatement(select_query);
-        stmt.setString(1, "%" + id + "%");
-        stmt.setString(2, "%" + cn + "%");
-        stmt.setString(3, "%" + expiry_date + "%");
-        stmt.setString(4, "%" + server_name + "%");
-        stmt.setString(5, "%" + server_ip + "%");
-        stmt.setString(6, "%" + description + "%");
-        stmt.setString(7, "%" + algorithm + "%");
-        stmt.setString(8, "%" + bit_length + "%");
-        stmt.setString(9, "%" + type + "%");
-        stmt.setString(10, "%" + phone + "%");
-        stmt.setString(11, "%" + server_owner + "%");
+        stmt.setString(1, "%" + search_id + "%");
+        stmt.setString(2, "%" + name + "%");
+        stmt.setString(3, "%" + surname + "%");
+        stmt.setString(4, "%" + fathers_name + "%");
+        stmt.setString(5, "%" + birth_date + "%");
+        stmt.setString(6, "%" + phone + "%");
+        stmt.setString(7, "%" + email + "%");
+        stmt.setString(8, "%" + status + "%");
+        stmt.setString(9, "%" + description + "%");
+
         
         ResultSet rs = stmt.executeQuery();
 %>
@@ -168,15 +181,13 @@ return date_long;
                 <td>   </td>  
                 <td></td> 
                 <td><b> ID  </td> 
-                <td><b> Certificate Name  </b> </td> 
-                <td><b> Expiry Date  </b> </td> 
-                <td><b> Server Name </b> </td> 
-                <td><b> Server IP  </b> </td>
-                <td><b> Server Owner </b> </td>
-                <td><b> Algorithm </b> </td> 
-                <td><b> Bit Length </b> </td> 
-                <td><b> Type </b> </td> 
-                <td><b> Phone </b> </td> 
+                <td><b> Name  </b> </td> 
+                <td><b> Surname  </b> </td> 
+                <td><b> Father's Name </b> </td> 
+                <td><b> Birth date  </b> </td>
+                <td><b> Phone </b> </td>
+                <td><b> Email </b> </td> 
+                <td><b> Status </b> </td> 
                 <td><b> Description  </b> </td>
                 </b>
             </tr> 
@@ -186,17 +197,16 @@ return date_long;
                 
                <td><input id="expired" name="expired" type="checkbox" onclick="this.form.submit();" title="Show Expired Certificates" <% if (expired) {%> checked <% } %>></td>  
                 <td> <input id="expiring" name="expiring" type="checkbox" onclick="this.form.submit();" title="Soon Expiring Certificates" <% if (expiring) {%> checked <% } %>> <input type="submit" value="Filter" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" /></td> 
-                <td> <input name="id" size="4" value="<%=id %>" /> </td> 
-                <td> <input name="cn" size="12" value="<%=cn %>"/> </td> 
-                <td> <input name="expiry_date" size="12" value="<%=expiry_date %>"/> </td> 
-                <td> <input name="server_name" size="12" value="<%=server_name %>"/> </td> 
-                <td> <input name="server_ip" size="12" value="<%=server_ip %>"/> </td>
-                <td> <input name="server_owner" size="12" value="<%=server_owner %>"/> </td>
-                <td> <input name="algorithm" size="4" value="<%=algorithm %>"/> </td> 
-                <td> <input name="bit_length" size="4" value="<%=bit_length %>"/> </td> 
-                <td> <input name="type" size="12" value="<%=type %>"/> </td> 
-                <td> <input name="phone" size="12" value="<%=phone %>"/> </td> 
-                <td> <input name="description" size="12" value="<%=description %>"/> </td>
+                <td> <input name="id" size="4" value="" /> </td> 
+                <td> <input name="cn" size="12" value="<%=name %>"/> </td> 
+                <td> <input name="expiry_date" size="12" value="<%=surname %>"/> </td> 
+                <td> <input name="server_name" size="12" value="<%=fathers_name %>"/> </td> 
+                <td> <input name="server_ip" size="12" value="<%=birth_date %>"/> </td>
+                <td> <input name="server_owner" size="12" value="<%=phone %>"/> </td>
+                <td> <input name="algorithm" size="4" value="<%=email %>"/> </td> 
+                <td> <input name="bit_length" size="4" value="<%=status %>"/> </td> 
+                <td> <input name="type" size="12" value="<%=description %>"/> </td> 
+
                 </b>
             </tr>
             
@@ -205,6 +215,7 @@ return date_long;
     String color = "";            
     while (rs.next()) {
         
+        /*
             if ( (Convert_to_longint(rs.getString("EXPIRY_DATE"))-ToDay())/86400000 <= 0 ) 
             {
                 color="#ff0000";
@@ -226,22 +237,21 @@ return date_long;
             }
             
             else { color="black"; }
+            **/
 
                 %>
 
                  
-            <tr style="color: <%=color%>; background: white;"> <td> <a href="member.jsp?action=edit&id=<%=rs.getString("ID")%> "> EDIT </a></td> <td><a href='#' onclick=" if (confirm('Delete Certificate\nAre   you sure?')){ document.forms['certs'].action='member.jsp?id=<%=rs.getString("ID")%>&action=delete';document.forms['certs'].submit();} else { void(''); };"> DELETE </a></td> 
-                <td> <%=rs.getString("ID")%>  </td>  
-                <td> <%=rs.getString("CN")%>  </td> 
-                <td> <%=rs.getString("EXPIRY_DATE")%>  </td> 
-                <td> <%=rs.getString("SERVER_NAME")%>  </td> 
-                <td> <%=rs.getString("IP")%>  </td> 
-                <td> <%=rs.getString("SERVER_OWNER")%> </td> 
-                <td> <%=rs.getString("ALGORITHM")%> </td>
-                <td> <%=rs.getString("BIT_LENGTH")%> </td>
-                <td> <%=rs.getString("TYPE")%> </td>
-                <td> <%=rs.getString("PHONE")%> </td>
-                <td> <%=rs.getString("DESCRIPTION")%>  </td>
+            <tr style="color: <%=color%>; background: white;"> <td> <a href="edit_member.jsp?action=edit&id=<%=rs.getString(id.toString())%> "> EDIT </a></td> <td><a href='#' onclick=" if (confirm('Delete Certificate\nAre   you sure?')){ document.forms['certs'].action='edit_member.jsp?id=<%=rs.getString(id.toString())%>&action=delete';document.forms['certs'].submit();} else { void(''); };"> DELETE </a></td> 
+                <td> <%=rs.getString(id.toString())%>  </td>  
+                <td> <%=rs.getString("name")%>  </td> 
+                <td> <%=rs.getString("surname")%>  </td> 
+                <td> <%=rs.getString("fathers_name")%>  </td> 
+                <td> <%=rs.getString("birth_date")%>  </td> 
+                <td> <%=rs.getString("phone")%> </td> 
+                <td> <%=rs.getString("email")%> </td>
+                <td> <%=rs.getString("status")%> </td>
+                <td> <%=rs.getString("description")%> </td>
             </tr>
                  
             <% 

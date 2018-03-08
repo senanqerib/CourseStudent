@@ -45,7 +45,7 @@
     if (rs.next()) {
         session.setAttribute("userid", userid);
         session.setAttribute("USER_TYPE", rs.getInt("TYPE"));
-        response.sendRedirect("success.jsp");
+        response.sendRedirect("success.jsp?table_name=s");
         }
     
     

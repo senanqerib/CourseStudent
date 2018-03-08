@@ -33,7 +33,6 @@
     } else {
 
 
-         String sms_id = "%";
          String s_id = "%";
          String t_id = "%";
          String l_id = "%";
@@ -43,10 +42,9 @@
          String sms_response = "%";
          
          
-        if (request.getParameter("sms_id") != null) {       sms_id =            request.getParameter("sms_id"); }
-        if (request.getParameter("s_id") != null) {         sms_id =            request.getParameter("s_id"); }
-        if (request.getParameter("t_id") != null) {         sms_id =            request.getParameter("t_id"); }
-        if (request.getParameter("l_id") != null) {         sms_id =            request.getParameter("l_id"); }
+        if (request.getParameter("s_id") != null) {         s_id =            request.getParameter("s_id"); }
+        if (request.getParameter("t_id") != null) {         t_id =            request.getParameter("t_id"); }
+        if (request.getParameter("l_id") != null) {         l_id =            request.getParameter("l_id"); }
         if (request.getParameter("sms_text") != null) {     sms_text =          request.getParameter("sms_text"); }
         if (request.getParameter("phone") != null) {        phone =             request.getParameter("phone"); }
         if (request.getParameter("sent_date") != null) {    sent_date =         request.getParameter("sent_date"); }

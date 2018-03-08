@@ -12,8 +12,8 @@
   <link rel="stylesheet" href="css/menu.css">
 <div id='cssmenu'>
 <ul>
-   <li class='active'><a href='success.jsp?student=1'><span>Students</span></a></li>
-   <li class='hover'><a href='success.jsp?teacher=1'><span>Teachers</span></a></li>
+   <li class='active'><a href='success.jsp?table_name=s'><span>Students</span></a></li>
+   <li class='hover'><a href='success.jsp?table_name=t'><span>Teachers</span></a></li>
    <li class='hover'><a href='add_member.jsp?action=addstudent'><span>Add Student</span></a></li>
    <li class='hover'><a href='add_member.jsp?action=addteacher'><span>Add Teacher</span></a></li>
    <li><a href='reg.jsp'><span>Add New User</span></a></li>
