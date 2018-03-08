@@ -33,14 +33,20 @@
     } else {
 
 
-         String id = "%";
+         String sms_id = "%";
+         String s_id = "%";
+         String t_id = "%";
+         String l_id = "%";
          String sms_text = "%";
          String phone = "%";
          String sent_date = "%";
          String sms_response = "%";
          
          
-        if (request.getParameter("id") != null) {           id =                request.getParameter("id"); }
+        if (request.getParameter("sms_id") != null) {       sms_id =            request.getParameter("sms_id"); }
+        if (request.getParameter("s_id") != null) {         sms_id =            request.getParameter("s_id"); }
+        if (request.getParameter("t_id") != null) {         sms_id =            request.getParameter("t_id"); }
+        if (request.getParameter("l_id") != null) {         sms_id =            request.getParameter("l_id"); }
         if (request.getParameter("sms_text") != null) {     sms_text =          request.getParameter("sms_text"); }
         if (request.getParameter("phone") != null) {        phone =             request.getParameter("phone"); }
         if (request.getParameter("sent_date") != null) {    sent_date =         request.getParameter("sent_date"); }
@@ -66,16 +72,18 @@
     Class.forName(driver);
     Connection con =DriverManager.getConnection(url, username, password);
     
-    String select_query =  "SELECT  CERT_ID,  PHONE, INSERT_DATE AS SENT_DATE, RESPONSE, SMS_TEXT  FROM SMS_HISTORY "
-                         + " WHERE CERT_ID LIKE ? AND PHONE  LIKE ?  AND INSERT_DATE LIKE ? AND RESPONSE LIKE ? AND SMS_TEXT LIKE ?";
+    String select_query =  "SELECT  s_id, t_id, l_id,  phone,  sent_date, sms_response, sms_text  FROM sms_history "
+                         + " WHERE s_id LIKE ? AND t_id LIKE ? AND l_id LIKE ? AND PHONE  LIKE ?  AND sent_date LIKE ? AND sms_response LIKE ? AND sms_text LIKE ?";
 
 
         PreparedStatement stmt = con.prepareStatement(select_query);
-        stmt.setString(1, "%" + id + "%");
-        stmt.setString(2, "%" + phone + "%");
-        stmt.setString(3, "%" + sent_date + "%");
-        stmt.setString(4, "%" + sms_response + "%");
-        stmt.setString(5, "%" + sms_text + "%");
+        stmt.setString(1, "%" + s_id + "%");
+        stmt.setString(2, "%" + t_id + "%");
+        stmt.setString(3, "%" + l_id + "%");
+        stmt.setString(4, "%" + phone + "%");
+        stmt.setString(5, "%" + sent_date + "%");
+        stmt.setString(6, "%" + sms_response + "%");
+        stmt.setString(7, "%" + sms_text + "%");
 
         ResultSet rs = stmt.executeQuery();
 %>
@@ -83,7 +91,9 @@
     <FORM id="cert" name="certs" method="POST" ACTION="#" >
         <table class="responsive-table">
             <tr>
-                <td><b> Certificate ID  </b> </td> 
+                <td><b> Student ID  </b> </td> 
+                <td><b> Teacher ID  </b> </td> 
+                <td><b> Lesson ID  </b> </td> 
                 <td><b> Phone  </b> </td> 
                 <td><b> Sent Date </b> </td> 
                 <td><b> SMS Response  </b> </td>
@@ -95,7 +105,9 @@
                 
 
                 <input type="submit" value="Filter" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" />
-                <td> <input name="id" size="4" value="<%=id %>" /> </td> 
+                <td> <input name="s_id" size="4" value="<%=s_id %>" /> </td> 
+                <td> <input name="t_id" size="4" value="<%=t_id %>" /> </td> 
+                <td> <input name="l_id" size="4" value="<%=l_id %>" /> </td> 
                 <td> <input name="phone" size="12" value="<%=phone %>"/> </td> 
                 <td> <input name="sent_date" size="12" value="<%=sent_date %>"/> </td> 
                 <td> <input name="sms_response" size="12" value="<%=sms_response %>"/> </td> 
@@ -111,11 +123,13 @@
 
                 %>
 
-                <td> <%=rs.getString("CERT_ID")%>  </td>  
-                <td> <%=rs.getString("PHONE")%>  </td> 
-                <td> <%=rs.getString("SENT_DATE")%>  </td> 
-                <td> <%=rs.getString("RESPONSE")%>  </td> 
-                <td> <%=rs.getString("SMS_TEXT")%>  </td> 
+                <td> <%=rs.getString("s_id")%>  </td>  
+                <td> <%=rs.getString("t_id")%>  </td>  
+                <td> <%=rs.getString("l_id")%>  </td>  
+                <td> <%=rs.getString("phone")%>  </td> 
+                <td> <%=rs.getString("sent_date")%>  </td> 
+                <td> <%=rs.getString("sms_response")%>  </td> 
+                <td> <%=rs.getString("sms_text")%>  </td> 
 
             </tr>
                  
