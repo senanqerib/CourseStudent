@@ -197,15 +197,15 @@ return date_long;
                 
                <td><input id="expired" name="expired" type="checkbox" onclick="this.form.submit();" title="Show Expired Certificates" <% if (expired) {%> checked <% } %>></td>  
                 <td> <input id="expiring" name="expiring" type="checkbox" onclick="this.form.submit();" title="Soon Expiring Certificates" <% if (expiring) {%> checked <% } %>> <input type="submit" value="Filter" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" /></td> 
-                <td> <input name="id" size="4" value="" /> </td> 
-                <td> <input name="cn" size="12" value="<%=name %>"/> </td> 
-                <td> <input name="expiry_date" size="12" value="<%=surname %>"/> </td> 
-                <td> <input name="server_name" size="12" value="<%=fathers_name %>"/> </td> 
-                <td> <input name="server_ip" size="12" value="<%=birth_date %>"/> </td>
-                <td> <input name="server_owner" size="12" value="<%=phone %>"/> </td>
-                <td> <input name="algorithm" size="4" value="<%=email %>"/> </td> 
-                <td> <input name="bit_length" size="4" value="<%=status %>"/> </td> 
-                <td> <input name="type" size="12" value="<%=description %>"/> </td> 
+                <td> <input name="<%=id %>" size="4" value="" /> </td> 
+                <td> <input name="name" size="12" value="<%=name %>"/> </td> 
+                <td> <input name="surname" size="12" value="<%=surname %>"/> </td> 
+                <td> <input name="fathers_name" size="12" value="<%=fathers_name %>"/> </td> 
+                <td> <input name="birth_date" size="12" value="<%=birth_date %>"/> </td>
+                <td> <input name="phone" size="12" value="<%=phone %>"/> </td>
+                <td> <input name="email" size="4" value="<%=email %>"/> </td> 
+                <td> <input name="status" size="4" value="<%=status %>"/> </td> 
+                <td> <input name="description" size="12" value="<%=description %>"/> </td> 
 
                 </b>
             </tr>
