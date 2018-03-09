@@ -5,6 +5,7 @@
 --%>
 
 
+<%@page import="com.cs.DbConnect"%>
 <%@page import="java.util.Properties"%>
 <%@page import="java.io.FileInputStream"%>
 <%@page import="java.io.File"%>
@@ -51,22 +52,8 @@ else  {
         //String username = session.getAttribute("userid").toString(); 
         String user_update_query = "update USERS  set uname=?, first_name=?, last_name=?, email=?, pass=password(?) where uname=? ";   
     
-    String url = "";
-    String driver = "";
-    String username = "";
-    String password = "";
-    Properties    props = new Properties();
-      
-    
-    props.load(new FileInputStream(getServletContext().getRealPath("/") + File.separator + "conf" + File.separator + "config.properties"));
-    
-    driver =    props.getProperty("driver").trim();
-    url =       props.getProperty("url").trim();
-    username =  props.getProperty("username").trim();
-    password =  props.getProperty("password").trim();
-    
-    Class.forName(driver);
-    Connection con =DriverManager.getConnection(url, username, password);
+        DbConnect DB = new DbConnect();
+        Connection con = DB.getConnection();
     
     
         PreparedStatement stmt_q=con.prepareStatement(query_password);
@@ -131,6 +118,7 @@ else  {
               </script>
          <%           
         }
+con.close();
     }
     catch (Exception e)
             {

@@ -3,6 +3,7 @@
     Created on : Sep 5, 2017, 4:56:35 PM
     Author     : Sanan Garibli
 --%>
+<%@page import="com.cs.DbConnect"%>
 <%@page import="java.io.FileInputStream"%>
 <%@page import="java.io.File"%>
 <%@page import="java.util.Properties"%>
@@ -45,22 +46,8 @@ if (request.getParameterMap().containsKey("id") && request.getParameterMap().con
 
     try
     {  
-    String url = "";
-    String driver = "";
-    String username = "";
-    String password = "";
-    Properties    props = new Properties();
-      
-    
-    props.load(new FileInputStream(getServletContext().getRealPath("/") + File.separator + "conf" + File.separator + "config.properties"));
-    
-    driver =    props.getProperty("driver").trim();
-    url =       props.getProperty("url").trim();
-    username =  props.getProperty("username").trim();
-    password =  props.getProperty("password").trim();
-    
-    Class.forName(driver);
-    Connection con =DriverManager.getConnection(url, username, password);
+        DbConnect DB = new DbConnect();
+        Connection con = DB.getConnection();
     
         //Statement st = con.createStatement();
         PreparedStatement stmt=con.prepareStatement("UPDATE CERTS set ID=?, CN=?, IP=?,EXPIRY_DATE=?, SERVER_NAME=?, DESCRIPTION=?, ALGORITHM=?, BIT_LENGTH=?,  TYPE=?, PHONE=?, SERVER_OWNER=?  where ID=?");

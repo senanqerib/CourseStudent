@@ -4,6 +4,7 @@
     Author     : Sanan Garibli
 --%>
 
+<%@page import="com.cs.DbConnect"%>
 <%@page import="java.io.FileInputStream"%>
 <%@page import="java.io.File"%>
 <%@page import="java.util.Properties"%>
@@ -24,22 +25,8 @@
     
     try {
 
-        String url = "";
-        String driver = "";
-        String username = "";
-        String password = "";
-        Properties    props = new Properties();
-
-
-        props.load(new FileInputStream(getServletContext().getRealPath("/") + File.separator + "conf" + File.separator + "config.properties"));
-
-        driver =    props.getProperty("driver").trim();
-        url =       props.getProperty("url").trim();
-        username =  props.getProperty("username").trim();
-        password =  props.getProperty("password").trim();
-
-        Class.forName(driver);
-        Connection con =DriverManager.getConnection(url, username, password);
+        DbConnect DB = new DbConnect();
+        Connection con = DB.getConnection();
         
         
     //Statement st = con.createStatement();
@@ -63,6 +50,7 @@
     } else {
         response.sendRedirect("index.jsp");
     }
+   con.close();
     }
     catch (Exception e)
              { 

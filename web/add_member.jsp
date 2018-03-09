@@ -76,7 +76,7 @@ if (request.getParameterMap().containsKey("action"))
 {
     action = request.getParameter("action");
 } 
-
+con.close();
 }
 
 catch (Exception e) 

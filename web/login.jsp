@@ -5,6 +5,7 @@
 --%>
 
 
+<%@page import="com.cs.DbConnect"%>
 <%@page import="java.io.File"%>
 <%@page import="java.io.FileInputStream"%>
 <%@page import="java.util.Properties"%>
@@ -16,26 +17,8 @@
     String userid = request.getParameter("uname");    
     String pwd = request.getParameter("pass");
     try {
-    //Class.forName("com.mysql.jdbc.Driver");
-    //Connection con = DriverManager.getConnection("jdbc:mysql://172.16.10.246:3306/certificates_monitoring", "seymur", "seymur");
-    
-    ////////////////////////////////////////////////////////////////////////////
-    String url = "";
-    String driver = "";
-    String username = "";
-    String password = "";
-    Properties    props = new Properties();
-      
-    
-    props.load(new FileInputStream(getServletContext().getRealPath("/") + File.separator + "conf" + File.separator + "config.properties"));
-    
-    driver =    props.getProperty("driver").trim();
-    url =       props.getProperty("url").trim();
-    username =  props.getProperty("username").trim();
-    password =  props.getProperty("password").trim();
-    
-    Class.forName(driver);
-    Connection con =DriverManager.getConnection(url, username, password);
+        DbConnect DB = new DbConnect();
+        Connection con = DB.getConnection();
     
     PreparedStatement stmt = con.prepareStatement("select uname, IFNULL(TYPE,2) TYPE from USERS where status=0 and uname=? and pass=password(?)");
     stmt.setString(1, userid);

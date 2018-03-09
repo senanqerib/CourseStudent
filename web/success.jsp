@@ -3,6 +3,7 @@
     Created on : Sep 5, 2017, 4:56:35 PM
     Author     : Sanan Garibli
 --%>
+<%@page import="com.cs.DbConnect"%>
 <%@page import="java.util.Calendar"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.ParseException"%>
@@ -106,22 +107,8 @@ return date_long;
     
  try { 
         
-    String url = "";
-    String driver = "";
-    String username = "";
-    String password = "";
-    Properties  props = new Properties();
-      
-    
-    props.load(new FileInputStream(getServletContext().getRealPath("/") + File.separator + "conf" + File.separator + "config.properties"));
-    
-    driver =    props.getProperty("driver").trim();
-    url =       props.getProperty("url").trim();
-    username =  props.getProperty("username").trim();
-    password =  props.getProperty("password").trim();
-    
-    Class.forName(driver);
-    Connection con =DriverManager.getConnection(url, username, password);
+    DbConnect DB = new DbConnect();
+    Connection con = DB.getConnection();
     
     if (table_name.equals("t") ){
         table_name = "teachers";

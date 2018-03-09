@@ -4,6 +4,7 @@
     Author     : Sanan Garibli
 --%>
 
+<%@page import="com.cs.DbConnect"%>
 <%@page import="java.util.Calendar"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.ParseException"%>
@@ -53,22 +54,8 @@
     
  try { 
         
-    String url = "";
-    String driver = "";
-    String username = "";
-    String password = "";
-    Properties  props = new Properties();
-      
-    
-    props.load(new FileInputStream(getServletContext().getRealPath("/") + File.separator + "conf" + File.separator + "config.properties"));
-    
-    driver =    props.getProperty("driver").trim();
-    url =       props.getProperty("url").trim();
-    username =  props.getProperty("username").trim();
-    password =  props.getProperty("password").trim();
-    
-    Class.forName(driver);
-    Connection con =DriverManager.getConnection(url, username, password);
+    DbConnect DB = new DbConnect();
+    Connection con = DB.getConnection();
     
     String select_query =  "SELECT  s_id, t_id, l_id,  phone,  sent_date, sms_response, sms_text  FROM sms_history "
                          + " WHERE s_id LIKE ? AND t_id LIKE ? AND l_id LIKE ? AND PHONE  LIKE ?  AND sent_date LIKE ? AND sms_response LIKE ? AND sms_text LIKE ?";

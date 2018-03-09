@@ -1,4 +1,5 @@
 
+<%@page import="com.cs.DbConnect"%>
 <%-- 
     Document   : reg
     Created on : Sep 5, 2017, 4:54:42 PM
@@ -27,19 +28,9 @@ else  {
     String user_name = session.getAttribute("userid").toString(); 
     String user_select_query = "select uname,first_name, last_name, email from USERS where uname=? ";   
     try {
-        String url = "";
-        String driver = "";
-        String username = "";
-        String password = "";
-        Properties    props = new Properties();
-        props.load(new FileInputStream(getServletContext().getRealPath("/") + File.separator + "conf" + File.separator + "config.properties"));
-        driver =    props.getProperty("driver").trim();
-        url =       props.getProperty("url").trim();
-        username =  props.getProperty("username").trim();
-        password =  props.getProperty("password").trim();
-        Class.forName(driver);
-        Connection con =DriverManager.getConnection(url, username, password);
-        
+        DbConnect DB = new DbConnect();
+        Connection con = DB.getConnection();
+
         PreparedStatement stmt=con.prepareStatement(user_select_query);
         stmt.setString(1, user_name); 
         ResultSet rs=stmt.executeQuery();
