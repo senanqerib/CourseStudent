@@ -6,7 +6,7 @@
 <%@page import="java.io.FileInputStream"%>
 <%@page import="java.io.File"%>
 <%@page import="java.util.Properties"%>
-<%@page import="com.cm.DbConnect"%>
+<%@page import="com.cs.DbConnect"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

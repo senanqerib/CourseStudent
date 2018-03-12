@@ -6,7 +6,8 @@
 <%@page import="java.io.FileInputStream"%>
 <%@page import="java.io.File"%>
 <%@page import="java.util.Properties"%>
-<%@page import="com.cm.DbConnect"%>
+<%@page import="com.cs.INSUPD_DB"%>
+<%@page import="java.sql.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -44,7 +45,7 @@ function check_expiry_date()
 
 </script>
 
-<%@ page import ="java.sql.*" %>
+
 <%
     
     if ((session.getAttribute("userid") == null) || (session.getAttribute("userid") == "")) {
@@ -54,46 +55,54 @@ function check_expiry_date()
     else {
        int USER_TYPE = Integer.parseInt(session.getAttribute("USER_TYPE").toString());
 
-try {
-    DbConnect DB = new DbConnect();
-    Connection con = DB.getConnection();
 
-   String s_id = "";
-   String t_id = "";
-   
    String action  = "";
+   String table_name = "";
+   boolean load_form = false;
     
-if (request.getParameterMap().containsKey("s_id"))
-{
-    s_id = request.getParameter("s_id");
-}
-if (request.getParameterMap().containsKey("t_id"))
-{
-    t_id = request.getParameter("t_id");
-} 
 
 if (request.getParameterMap().containsKey("action"))
 {
     action = request.getParameter("action");
-} 
-con.close();
 }
 
-catch (Exception e) 
+if (action.equals("addteacher"))
 {
-       String error=e.toString();
-         %>
+    table_name = "teachers";
+    load_form = true;
+    //INSUPD_DB ins_to_db = new INSUPD_DB();
+    //ins_to_db.DB_Insert_Update("insert", table_name,  "Ehtiram", "Kazimov", "Mirzəli", "21.11.1989", "+994552909137", "test@test.com", 1, "The best teacher");
+}  
+    
+else if (action.equals("addstudent"))
+{
+    table_name = "students";
+    load_form = true;
+}
+else 
+    {   %>
                <script type="text/javascript">
-                   alert("database connection error: <%=error%>");
+                   alert("Wrong action!  <%=action%>");
                </script>
         <%
-
 }
 
+if (load_form) { %>
+    <form method="post" id ="add_member" name="add_member" action="#" >           
+            <input  class="name" type="text" name="name"  placeholder="Name"  required/>
+            <input  class="name" type="text" id="surname" name="surname" placeholder="Surname" required/>
+            <input  class="name" type="text" name="fathers_name" placeholder="Father's Name"  required/>
+            <input  class="name"  type="text" name="birth_date"  placeholder="Date of birth"  required/>
+            <input  class="name"  type="text" name="phone"  placeholder="Phone (e.g. +994551234567;+994501234567" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode===43 || event.charCode===59" />
+            <input  class="name"  type="email" name="email"  placeholder="E-mail address (e.g. ali@example.com" />         
+            <input  class="name" type="text" name="description" placeholder="description" />
+            <input  type="hidden" name="action" value="<%=action%>">             
+            <input class="button" type="submit" name="btnSubmit" id="btnSubmit" value="Add member" onclick="if (confirm('Adding Member: \nAre   you sure?')){ document.forms['add_member'].action='add_member.jsp?action=<%=action%>';document.forms['add_member'].submit();} else { void(''); }; "/>
+    </form>
+<%
+}
 
 } // session scope
-
-
 
 
 %>

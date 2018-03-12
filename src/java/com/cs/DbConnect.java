@@ -23,7 +23,7 @@ public class DbConnect {
     public  Connection getConnection() throws SQLException, IOException {
 
          Properties props = new Properties();  
-         props.load(new FileInputStream("C:\\Users\\Acer\\Documents\\NetBeansProjects\\CM\\web\\conf" +File.separator + "config.properties"));         
+         props.load(new FileInputStream("C:\\Users\\Acer\\Documents\\NetBeansProjects\\CourseStudent\\web\\conf" +File.separator + "config.properties"));         
     
          String driver = props.getProperty("driver").trim();
          String url = props.getProperty("url").trim();
